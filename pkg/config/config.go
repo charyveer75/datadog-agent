@@ -815,7 +815,7 @@ func sanitizeAPIKey(config Config) {
 	config.Set("api_key", strings.TrimSpace(config.GetString("api_key")))
 }
 
-//trims a forward slash from the end of various config URL's (site, dd_url, and additional endpoints)
+//trims any forward slashes from the end of various config URL's (site, dd_url, and additional endpoints)
 func trimTrailingSlashFromURLS(config Config) error {
 	var urls = []string{
 		"site",
@@ -829,7 +829,12 @@ func trimTrailingSlashFromURLS(config Config) error {
 	}
 
 	for _, domain := range urls {
-		config.Set(domain, strings.TrimSuffix(config.GetString(domain), "/"))
+		for {
+			if config.GetString(domain)[len(config.GetString(domain))-1:] != "/" {
+				break
+			}
+			config.Set(domain, strings.TrimSuffix(config.GetString(domain), "/"))
+		}
 	}
 
 	for _, es := range additionalEndpointSelectors {
@@ -842,8 +847,13 @@ func trimTrailingSlashFromURLS(config Config) error {
 			return err
 		}
 		for domain, key := range additionalEndpoints {
-			domain = strings.TrimSuffix(domain, "/")
-			sanitizedAdditionalEndpoints[domain] = key
+			for {
+				domain = strings.TrimSuffix(domain, "/")
+				if domain[len(domain)-1:] != "/" {
+					sanitizedAdditionalEndpoints[domain] = key
+					break
+				}
+			}
 		}
 		config.Set(es, sanitizedAdditionalEndpoints)
 	}

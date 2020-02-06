@@ -392,32 +392,32 @@ func TestTrimTrailingSlashFromURLS(t *testing.T) {
 	}
 	datadogYaml := `
 api_key: fakeapikey
-site: datadoghq.com/
+site: datadoghq.com/////
 dd_url: https://7-17-0-app.agent.datadoghq.com/
 
 additional_endpoints:
-  testing.com/:
+  testing.com///:
   - fakekey
   test2.com/:
   - fakekey
 
 apm_config:
   additional_endpoints:
-    testingapm.com/:
+    testingapm.com//:
     - fakekey
     test2apm.com/:
     - fakekey
 
 logs_config:
   additional_endpoints:
-    testinglogs.com/:
+    testinglogs.com///////:
     - fakekey
     test2logs.com/:
     - fakekey
 
 process_config:
   additional_endpoints:
-    testingproc.com/:
+    testingproc.com/////:
     - fakekey
     test2proc.com/:
     - fakekey
