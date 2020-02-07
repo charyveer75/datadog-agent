@@ -12,14 +12,15 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
-	"html/template"
 	"io"
+	"text/template"
 
 	"github.com/DataDog/datadog-agent/pkg/config"
 )
 
 var (
-	fmap = Fmap()
+	fmap           = Textfmap()
+	templateFolder string
 )
 
 // FormatStatus takes a json bytestring and prints out the formatted statuspage
